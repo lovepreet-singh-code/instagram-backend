@@ -1,0 +1,28 @@
+# Ignore node modules
+node_modules
+
+# Logs
+logs
+*.log
+
+# Environment files
+.env
+.env.local
+
+# Dependency directories
+dist
+coverage
+
+# OS / Editor
+.DS_Store
+Thumbs.db
+.vscode
+.idea
+
+# Docker stuff
+Dockerfile
+docker-compose.yml
+
+# Git
+.git
+.gitignore
