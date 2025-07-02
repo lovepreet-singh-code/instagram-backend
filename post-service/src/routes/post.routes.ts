@@ -5,13 +5,13 @@ import {
   getAllPosts,
   getPostById,
   updatePost,
-  deletePost
+  deletePost,
 } from '../controllers/post.controller';
 import { authenticate } from '../middlewares/auth.middleware';
+import upload from '../middlewares/upload.middleware';
 
 const router = express.Router();
-
-router.post('/', authenticate, createPost);
+router.post('/', authenticate, upload.array('media', 5), createPost);
 router.get('/', getAllPosts);
 router.get('/:id', getPostById); 
 router.put('/:id', authenticate, updatePost);

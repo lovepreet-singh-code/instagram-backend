@@ -3,6 +3,10 @@ import mongoose from 'mongoose';
 const postSchema = new mongoose.Schema({
   caption: { type: String },
   image: { type: String },
+  media: {
+  type: [String], 
+  default: [],
+},
   user: {
     type: mongoose.Schema.Types.ObjectId,
     ref: 'User',

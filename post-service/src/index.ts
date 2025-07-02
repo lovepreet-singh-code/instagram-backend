@@ -1,12 +1,12 @@
 import express from 'express';
-import dotenv from 'dotenv';
 import { connectDB } from './config/db';
 import postRoutes from './routes/post.routes';
 import './models/user.model';
 import './config/redis';
-
+import dotenv from 'dotenv';
 
 dotenv.config();
+
 
 const app = express();
 const PORT = process.env.PORT || 5001;
