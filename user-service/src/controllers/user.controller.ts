@@ -16,6 +16,7 @@ export const register = asyncHandler(async (req: Request, res: Response) => {
 
   const token = jwt.sign({ _id: user._id }, process.env.JWT_SECRET!, { expiresIn: '7d' });
 
+ 
   res.status(201).json({
     message: 'User registered successfully',
     user: {

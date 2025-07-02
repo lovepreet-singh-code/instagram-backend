@@ -3,10 +3,14 @@ import dotenv from 'dotenv';
 import { connectDB } from './config/db';
 import postRoutes from './routes/post.routes';
 import './models/user.model';
+import './config/redis';
+
+
 dotenv.config();
 
 const app = express();
 const PORT = process.env.PORT || 5001;
+
 
 app.use(express.json());
 app.use('/api/posts', postRoutes);

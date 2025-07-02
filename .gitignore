@@ -1,6 +1,7 @@
-node_modules
-dist
+# .gitignore
+node_modules/
+dist/
 .env
-**/node_modules
-**/dist
-**/.env
+.env.* 
+Dockerfile
+docker-compose.override.yml

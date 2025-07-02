@@ -5,6 +5,7 @@ import redis from '../config/redis';
 import mongoose from 'mongoose';
 
 
+
 export const getMyProfile = asyncHandler(async (req: Request, res: Response) => {
   const userId = req.userId;
   const cacheKey = `profile:${userId}`;
@@ -213,4 +214,15 @@ export const searchUsers = asyncHandler(async (req: Request, res: Response) => {
   }).select('username profilePic');
 
   res.status(200).json({ users });
+});
+
+export const deleteUser = asyncHandler(async (req: Request, res: Response) => {
+  const userId = req.userId;
+
+  const user = await User.findById(userId);
+  if (!user) return res.status(404).json({ message: 'User not found' });
+
+  await User.findByIdAndDelete(userId);
+
+  res.status(200).json({ message: 'User deleted successfully' });
 });

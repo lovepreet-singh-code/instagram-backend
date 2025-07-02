@@ -5,7 +5,8 @@ import {  updateProfile,
          unfollowUser,
          getFollowers,
          getFollowing,
-         searchUsers, } from '../controllers/auth.controller';
+         searchUsers,
+        deleteUser } from '../controllers/auth.controller';
 import { protect } from '../middlewares/auth.middleware';
 
 const router = express.Router();
@@ -17,5 +18,5 @@ router.post('/:id/unfollow', protect, unfollowUser);
 router.get('/:id/followers', getFollowers);        
 router.get('/:id/following', getFollowing);       
 router.get('/search/users', searchUsers);     
-
+router.delete('/delete', protect, deleteUser); 
 export default router;

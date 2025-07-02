@@ -6,11 +6,13 @@ import './config/redis';
 import { notFound, errorHandler } from './middlewares/error.middleware';
 import authRoutes from './routes/auth.routes';
 
+
 export const app = express();
 
 app.use(cors());
 app.use(express.json());
 app.use(morgan('dev'));
+
 
 // Routes
 app.use('/api/auth', authRoutes);
