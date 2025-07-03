@@ -37,5 +37,15 @@ services:
       - redis
       - kafka
 
+  like-service:
+    build:
+      context: ./like-service
+    ports:
+      - "5003:5003"
+    env_file:
+      - ./like-service/.env
+    depends_on:
+      - mongo
+
 volumes:
   mongo-data:
