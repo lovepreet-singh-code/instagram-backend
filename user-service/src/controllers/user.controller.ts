@@ -14,7 +14,12 @@ export const register = asyncHandler(async (req: Request, res: Response) => {
 
   const user = await User.create({ username, email, password: hashedPassword });
 
-  const token = jwt.sign({ _id: user._id }, process.env.JWT_SECRET!, { expiresIn: '7d' });
+  //const token = jwt.sign({ _id: user._id }, process.env.JWT_SECRET!, { expiresIn: '7d' });
+const token = jwt.sign(
+  { userId: user._id }, // ✅ correct
+  process.env.JWT_SECRET!,
+  { expiresIn: '7d' }
+);
 
  
   res.status(201).json({
@@ -37,7 +42,12 @@ export const login = asyncHandler(async (req: Request, res: Response) => {
   const isMatch = await bcrypt.compare(password, user.password);
   if (!isMatch) return res.status(400).json({ message: 'Invalid credentials' });
 
-  const token = jwt.sign({ _id: user._id }, process.env.JWT_SECRET!, { expiresIn: '7d' });
+  //const token = jwt.sign({ _id: user._id }, process.env.JWT_SECRET!, { expiresIn: '7d' });
+const token = jwt.sign(
+  { userId: user._id }, // ✅ correct
+  process.env.JWT_SECRET!,
+  { expiresIn: '1d' }
+);
 
   res.status(200).json({
     message: 'Login successful',

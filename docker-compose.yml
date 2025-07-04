@@ -41,11 +41,27 @@ services:
     build:
       context: ./like-service
     ports:
-      - "5003:5003"
+      - "5002:5002"
     env_file:
       - ./like-service/.env
     depends_on:
       - mongo
+
+  comment-service:
+    build:
+       context:  ./comment-service
+    ports:
+      - "5003:5003"
+    env_file:
+      - ./comment-service/.env
+    depends_on:
+      - mongo
+
+  comment-db:
+    image: mongo
+    container_name: comment-db
+    ports:
+      - "27020:27017"
 
 volumes:
   mongo-data:
