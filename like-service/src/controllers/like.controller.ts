@@ -1,16 +1,36 @@
 import { Request, Response } from 'express';
 import Like from '../models/like.model';
+import Post from '../models/post.model';
 
 export const likePost = async (req: Request, res: Response) => {
-  const { postId } = req.body;
-  const userId = (req as any).userId;
+  try {
+    const { postId } = req.body;
+    const userId = (req as any).userId;
 
-  const alreadyLiked = await Like.findOne({ user: userId, post: postId });
-  if (alreadyLiked) return res.status(400).json({ message: 'Post already liked' });
+    if (!userId) {
+      return res.status(401).json({ message: 'Unauthorized' });
+    }
 
-  const like = await Like.create({ user: userId, post: postId });
-  res.status(201).json({ message: 'Post liked', like });
+    const post = await Post.findById(postId);
+    if (!post) {
+      return res.status(404).json({ message: 'Post not found' });
+    }
+
+    const alreadyLiked = await Like.findOne({ user: userId, post: postId });
+    if (alreadyLiked) {
+      return res.status(400).json({ message: 'Post already liked' });
+    }
+
+    const like = await Like.create({ user: userId, post: postId });
+
+  
+
+    return res.status(201).json({ message: 'Post liked', like });
+  } catch (error) {
+    return res.status(500).json({ message: 'Server Error', error });
+  }
 };
+
 
 export const unlikePost = async (req: Request, res: Response) => {
   const { postId } = req.body;

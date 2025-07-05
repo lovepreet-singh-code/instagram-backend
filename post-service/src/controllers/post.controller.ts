@@ -1,9 +1,7 @@
 import { Request, Response } from 'express';
 import Post from '../models/post.models';
 import { getCache, setCache } from '../utils/cache';
-import asyncHandler from '../utils/asyncHandler';
-import cloudinary   from '../config/cloudinary';
-import upload from '../middlewares/upload.middleware';
+
 
 export const createPost = async (req: Request, res: Response): Promise<void> => {
   try {
@@ -20,12 +18,13 @@ export const createPost = async (req: Request, res: Response): Promise<void> => 
 
     const post = await Post.create({
       caption,
-      media: mediaUrls, // ✅ Save media URLs here
+      media: mediaUrls,
       user: userId,
     });
 
     res.status(201).json({ message: 'Post created', post });
   } catch (error) {
+    console.error('❌ Error creating post:', error);
     res.status(500).json({ message: 'Server error', error });
   }
 };

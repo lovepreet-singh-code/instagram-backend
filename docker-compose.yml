@@ -1,4 +1,4 @@
-version: '3.8'
+version: "3.8"
 
 services:
   mongo:
@@ -17,51 +17,65 @@ services:
     build:
       context: ./user-service
     ports:
-      - "5000:5000"
+      - "5100:5000"
     env_file:
       - ./user-service/.env
     depends_on:
-      - mongo
-      - redis
-      - kafka
+      redis:
+        condition: service_started
+      mongo:
+        condition: service_started
+    restart: on-failure
 
   post-service:
     build:
       context: ./post-service
     ports:
-      - "5001:5001"
+      - "5101:5001"
     env_file:
       - ./post-service/.env
     depends_on:
-      - mongo
-      - redis
-      - kafka
+      redis:
+        condition: service_started
+      mongo:
+        condition: service_started
+    restart: on-failure
 
   like-service:
     build:
       context: ./like-service
     ports:
-      - "5002:5002"
+      - "5102:5002"
     env_file:
       - ./like-service/.env
     depends_on:
-      - mongo
+      mongo:
+        condition: service_started
+    restart: on-failure
 
   comment-service:
     build:
-       context:  ./comment-service
+      context: ./comment-service
     ports:
-      - "5003:5003"
+      - "5103:5003"
     env_file:
       - ./comment-service/.env
     depends_on:
-      - mongo
+      mongo:
+        condition: service_started
+    restart: on-failure
 
-  comment-db:
-    image: mongo
-    container_name: comment-db
+  notification-service:
+    build:
+      context: ./notification-service
     ports:
-      - "27020:27017"
+      - "5104:5004"
+    env_file:
+      - ./notification-service/.env
+    depends_on:
+      mongo:
+        condition: service_started
+    restart: on-failure
 
 volumes:
   mongo-data:

@@ -7,6 +7,7 @@ import { notFound, errorHandler } from './middlewares/error.middleware';
 import authRoutes from './routes/auth.routes';
 
 
+
 export const app = express();
 
 app.use(cors());

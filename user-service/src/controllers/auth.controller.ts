@@ -5,7 +5,6 @@ import redis from '../config/redis';
 import mongoose from 'mongoose';
 
 
-
 export const getMyProfile = asyncHandler(async (req: Request, res: Response) => {
   const userId = req.userId;
   const cacheKey = `profile:${userId}`;
@@ -57,20 +56,21 @@ export const updateProfile = asyncHandler(async (req: Request, res: Response) =>
 export const followUser = asyncHandler(async (req: Request, res: Response) => {
   const userId = req.userId;
 
-  // ✅ 1. Check for undefined
   if (!userId) {
     return res.status(401).json({ message: 'Unauthorized' });
   }
 
-  const currentUserId = new mongoose.Types.ObjectId(userId); // ✅ 2. Safe cast after check
+  const currentUserId = new mongoose.Types.ObjectId(userId);
   const targetUserId = new mongoose.Types.ObjectId(req.params.id);
 
   if (currentUserId.equals(targetUserId)) {
     return res.status(400).json({ message: "You can't follow yourself" });
   }
 
-  const currentUser = await User.findById(currentUserId);
-  const targetUser = await User.findById(targetUserId);
+  const [currentUser, targetUser] = await Promise.all([
+    User.findById(currentUserId),
+    User.findById(targetUserId),
+  ]);
 
   if (!currentUser || !targetUser) {
     return res.status(404).json({ message: 'User not found' });
@@ -83,17 +83,16 @@ export const followUser = asyncHandler(async (req: Request, res: Response) => {
   targetUser.followers.push(currentUserId);
   currentUser.following.push(targetUserId);
 
-  await targetUser.save();
-  await currentUser.save();
+  await Promise.all([targetUser.save(), currentUser.save()]);
 
-  // ✅ 6. Invalidate Redis cache
-  await redis.del(`followers:${targetUserId.toString()}`);
-  await redis.del(`following:${currentUserId.toString()}`);
+  await Promise.all([
+    redis.del(`followers:${targetUserId.toString()}`),
+    redis.del(`following:${currentUserId.toString()}`),
+  ]);
 
 
-  res.status(200).json({ message: 'User followed successfully' });
+  return res.status(200).json({ message: 'User followed successfully' });
 });
-
 export const unfollowUser = asyncHandler(async (req: Request, res: Response) => {
   const userId = req.userId;
 

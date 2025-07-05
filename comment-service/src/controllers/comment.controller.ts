@@ -14,6 +14,8 @@ export const addComment = async (req: AuthRequest, res: Response): Promise<void>
 
   try {
     const comment = await Comment.create({ post: postId, user: userId, text });
+
+    
     res.status(201).json({ success: true, comment });
   } catch (err) {
     res.status(500).json({ success: false, message: 'Server error', error: err });

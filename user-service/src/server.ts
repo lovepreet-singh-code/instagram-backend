@@ -19,3 +19,4 @@ export const startServer = async () => {
     process.exit(1);
   }
 };
+
