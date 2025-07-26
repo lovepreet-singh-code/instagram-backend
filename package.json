@@ -1,0 +1,24 @@
+{
+  "name": "instgram-backend",
+  "version": "1.0.0",
+  "main": "index.js",
+  "scripts": {
+     "lint": "eslint . --ext .ts,.js",
+  "format": "prettier --write .",
+  "prepare": "husky install"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "description": "",
+  "devDependencies": {
+    "@commitlint/cli": "^19.8.1",
+    "@commitlint/config-conventional": "^19.8.1",
+    "eslint": "^9.32.0",
+    "eslint-config-prettier": "^10.1.8",
+    "eslint-plugin-prettier": "^5.5.3",
+    "husky": "^9.1.7",
+    "lint-staged": "^16.1.2",
+    "prettier": "^3.6.2"
+  }
+}
